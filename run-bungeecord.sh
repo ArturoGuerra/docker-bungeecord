@@ -126,15 +126,7 @@ if [ "${REPLACE_ENV_VARIABLES^^}" = "TRUE" ]; then
   done < <(env)
 fi
 
-if [ $UID == 0 ]; then
-  chown -R bungeecord:bungeecord $BUNGEE_HOME
-fi
-
 echo "Setting initial memory to ${INIT_MEMORY:-${MEMORY}} and max to ${MAX_MEMORY:-${MEMORY}}"
 JVM_OPTS="-Xms${INIT_MEMORY:-${MEMORY}} -Xmx${MAX_MEMORY:-${MEMORY}} ${JVM_OPTS}"
 
-if [ $UID == 0 ]; then
-  exec sudo -u bungeecord java $JVM_OPTS -jar $BUNGEE_JAR "$@"
-else
-  exec java $JVM_OPTS -jar $BUNGEE_JAR "$@"
-fi
+exec java $JVM_OPTS -jar $BUNGEE_JAR "$@"
